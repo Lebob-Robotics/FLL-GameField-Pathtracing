@@ -2,9 +2,9 @@ import pygame
 
 from queue import PriorityQueue
 
-from scr.gui.grid import Grid
+from scr.pathtracing.gui.grid import Grid
 
-class Main:
+class PathTracer:
     def __init__(self, win_width):
         pygame.init()
 
@@ -145,11 +145,6 @@ class Main:
             if self.end:
                 self.debug(2, 'End', self.end.col, self.end.row)
 
-            self.debug(3, 'Frame Rate', self.slider.value)
-
-            self.slider.update()
-            self.slider.draw(self.window)
-
             pygame.display.flip()
 
             if self.started:
@@ -160,6 +155,6 @@ class Main:
         pygame.quit()
 
 if __name__ == "__main__":
-    main = Main(win_width = 800)
+    main = PathTracer(win_width = 800)
     main.run()
 
