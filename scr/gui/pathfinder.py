@@ -2,8 +2,7 @@ import pygame
 
 from queue import PriorityQueue
 
-from grid import Grid
-from slider import Slider
+from scr.gui.grid import Grid
 
 class Main:
     def __init__(self, win_width):
@@ -11,15 +10,14 @@ class Main:
 
         # initialise window
         self.window = pygame.display.set_mode((win_width, win_width))
-        pygame.display.set_caption("A* Pathfinding")
+        pygame.display.set_caption("Game Field")
 
         # timing and clock
         self.clock = pygame.time.Clock()
-        self.tick_rate = 240
+        self.tick_rate = 0
 
         # debug
         self.font = pygame.font.SysFont('arial', 20)
-        self.slider = Slider((200, 30), 200, (0, 240), default_value=0)
 
         # initialise grid
         self.width = win_width
@@ -155,7 +153,6 @@ class Main:
             pygame.display.flip()
 
             if self.started:
-                self.tick_rate = self.slider.value
                 self.clock.tick(self.tick_rate)
             else:
                 self.clock.tick(60)
