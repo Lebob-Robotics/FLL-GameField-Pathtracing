@@ -1,7 +1,7 @@
 import pygame
 import math
 
-from scr.pathtracing.gui.node import Node
+from scr.pathtracing.pathfinding.node import Node
 
 class Grid:
     def __init__(self, rows, cols, width):
