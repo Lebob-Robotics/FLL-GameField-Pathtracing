@@ -2,14 +2,15 @@ import pygame
 
 from queue import PriorityQueue
 
-from scr.pathtracing.gui.grid import Grid
+from scr.pathtracing.pathfinding.grid import Grid
 
 class PathTracer:
-    def __init__(self, win_width):
+    def __init__(self, grid: Grid):
         pygame.init()
 
         # initialise window
-        self.window = pygame.display.set_mode((win_width, win_width))
+        self.width = grid.width
+        self.window = pygame.display.set_mode((self.width, self.width))
         pygame.display.set_caption("Game Field")
 
         # timing and clock
@@ -20,8 +21,7 @@ class PathTracer:
         self.font = pygame.font.SysFont('arial', 20)
 
         # initialise grid
-        self.width = win_width
-        self.grid = Grid(50, 50, self.width)
+        self.grid = grid
 
         # algorithm related
         self.set_index = 0
@@ -155,6 +155,6 @@ class PathTracer:
         pygame.quit()
 
 if __name__ == "__main__":
-    main = PathTracer(win_width = 800)
+    main = PathTracer(Grid(50, 50, 800))
     main.run()
 
