@@ -1,25 +1,30 @@
-A visual implementation of the A* pathfinding algorithm using Python's pygame module.
+# FLL Game Field Pathfinding Algorithm
 
-**Tile colour key:******
+This program allows the use to create a basic "maze" based on an image of an FLL game field. The user has the option to adjust the pathfinding settings based on their robot size. The program iterates through each mission location and generates an optimal path for each. This is then converted into a set of instructions that the robot can interpret.
 
-Orange - start
-Turqoise - end
-Black - barrier
-White - none
-Green - open
-Red - closed
-Purple - path
+## Usage
 
+Running the program will open a pygame window that acts as the GUI. A grid is formed on the screen to represent units on the field. Pressing space will start the calculations. The end results of the algorithm is stored in a json file. 
 
-**Instructions:******
+### Node Colour Key
+- White: empty tile
+- Black: wall/barrier tile
+- Orange: mission location (*target location*)
+- Green: tiles to-be-checked (*during algorithm*)
+- Red: tile already checked (*during algorithm*)
 
-Clicking while there is no start or end on the grid will place respective tiles at the mouse pointer.
-Subsequent clicks will place barrier tiles and right clicking a tile will remove it.
+### Inputs
+- Left click to place barrier tile
+- Right click to remove barrier tile
+- Lshift click to place mission location
 
-Pressing space will begin the algorithm.
-The frames slider can be used during a search to set the algorithm speed. (0 is fastest possible)
+## Algorithm
 
+The program uses the a* pathfinding algorithm which is a commonly used algorithm in applications such as navigation software and video game NPC navigation. 
 
-**Notes:******
+## Requirements
 
-The algorithm considers diagonal tiles valid successors for a path and takes into consideration the weighting. 
+- LEGO® Spike Prime Hub running [pybricks](https://pybricks.com/) firmware
+- Python version at least 3.x.x
+- Python [pygame](https://github.com/pygame/pygame) library
+- Pybricks python library
