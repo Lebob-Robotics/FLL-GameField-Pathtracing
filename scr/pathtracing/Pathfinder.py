@@ -31,8 +31,8 @@ class PathFinder:
             pygame.display.update()
             
     def editGrid(self):
-        mousePos = pygame.mouse.get_pos()
-        if any(mousePos):
+        if any(pygame.mouse.get_pressed()):
+            mousePos = pygame.mouse.get_pos()
             node: Node = self.grid.getMouseNode(mousePos)
             if pygame.mouse.get_pressed()[0]:  # left click
                 modKeys = pygame.key.get_mods()

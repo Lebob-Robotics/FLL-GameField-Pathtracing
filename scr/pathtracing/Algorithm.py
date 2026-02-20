@@ -42,3 +42,7 @@ class Algorithm:
                     self.openSet.put((neighbour.f, self.searchIndex, neighbour))
                     self.closedSet.add(neighbour)
                     neighbour.setFlag(Node.Flags.OPEN) if neighbour != self.grid.endNode else neighbour.setFlag(Node.Flags.DESTINATION)
+                    
+        if self.openSet.qsize() == 0:
+            self.started = False
+            self.foundPath = False
