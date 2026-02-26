@@ -26,6 +26,7 @@ class PathFinder:
             else:
                 self.editGrid()
             
+            self.window.fill('white')
             self.grid.draw(self.window)
             
             pygame.display.update()
@@ -56,5 +57,5 @@ if __name__ == "__main__":
     window = pygame.display.set_mode((1000, 800))
     pygame.display.set_caption("Pathfinder")
     
-    pathFinder = PathFinder(Grid(50, 40, window), window)
+    pathFinder = PathFinder(Grid(50, 40, window.size, backgroundColour= 'white'), window)
     pathFinder.run()
