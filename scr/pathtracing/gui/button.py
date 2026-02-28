@@ -1,7 +1,7 @@
 import pygame
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, size: tuple[int, int], colour: str | tuple[int, int, int], text: str = '', icon: pygame.Surface | None = None, *groups: pygame.sprite.Group):
+    def __init__(self, size: tuple[int, int], colour: str | tuple[int, int, int], text: str = '', icon: pygame.Surface | None = None, groups: list[pygame.sprite.Group] = []):
         super().__init__(*groups)
         self.image: pygame.Surface = pygame.Surface(size, pygame.SRCALPHA)
         if icon:

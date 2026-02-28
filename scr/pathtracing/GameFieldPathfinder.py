@@ -9,7 +9,6 @@ class GameFieldPathfinder(PathFinder):
         WINDOW_WIDTH: int = 1500
         GRID_SIZE: int = 100
         
-        pygame.init()
         gameMap = pygame.image.load(Path("scr", "assets", "gamefields", f"{mapName}-gamefield.jpeg"))
         window = pygame.display.set_mode(pygame.transform.scale_by(gameMap, WINDOW_WIDTH / gameMap.width).size)
         pygame.display.set_caption(f"{mapName.capitalize()} Gamefield Pathfinding")
@@ -21,5 +20,6 @@ class GameFieldPathfinder(PathFinder):
         
         
 if __name__ == "__main__":
+    pygame.init()
     pathfinder = GameFieldPathfinder("unearthed")
     pathfinder.run()

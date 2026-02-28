@@ -1,6 +1,6 @@
 import pygame
 
-from node import Node
+from pathtracing.astar.node import Node
 
 class Grid(pygame.sprite.Group):
     def __init__(self, length: int, height: int, windowSize: tuple[int, int], screenBuffer: int = 20, background: pygame.surface.Surface | None = None, backgroundColour: str = "white", nodeAlpha: int = 255):
