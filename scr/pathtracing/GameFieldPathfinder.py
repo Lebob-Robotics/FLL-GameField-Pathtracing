@@ -1,8 +1,8 @@
 from pathlib import Path
 import pygame
 
-from pathtracing.Pathfinder import PathFinder
-from pathtracing.Grid import Grid
+from pathtracing.astar.pathfinder import PathFinder
+from pathtracing.astar.grid import Grid
 
 class GameFieldPathfinder(PathFinder):
     def __init__(self, mapName: str):

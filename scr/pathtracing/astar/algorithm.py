@@ -1,7 +1,7 @@
 from queue import PriorityQueue
 
-from pathtracing.Node import Node
-from pathtracing.Grid import Grid
+from pathtracing.astar.node import Node
+from pathtracing.astar.grid import Grid
 
 class Algorithm:
     def __init__(self, grid: Grid, started: bool = False):
