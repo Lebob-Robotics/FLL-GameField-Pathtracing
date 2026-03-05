@@ -12,24 +12,21 @@ class PathFinder:
         self.debugFont = pygame.font.SysFont('arial', 20)
         self.algorithm: Algorithm = Algorithm(self.grid)
         
-    def run(self):  
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE and not self.algorithm.started:
-                        self.algorithm = Algorithm(self.grid, True)
-                    
-            if self.algorithm.started:
-                self.algorithm.step()
-            else:
-                self.editGrid()
-            
-            self.window.fill('white')
-            self.grid.draw(self.window)
-            
-            pygame.display.update()
+    def step(self):  
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and not self.algorithm.started:
+                    self.algorithm = Algorithm(self.grid, True)
+                
+        if self.algorithm.started:
+            self.algorithm.step()
+        else:
+            self.editGrid()
+        
+        self.window.fill('white')
+        self.grid.draw(self.window)
             
     def editGrid(self):
         if any(pygame.mouse.get_pressed()):
@@ -58,4 +55,6 @@ if __name__ == "__main__":
     pygame.display.set_caption("Pathfinder")
     
     pathFinder = PathFinder(Grid(50, 40, window.size, backgroundColour= 'white'), window)
-    pathFinder.run()
+    while True:
+        pathFinder.step()
+        pygame.display.update()

@@ -21,7 +21,6 @@ class FileUtility:
     
     @staticmethod
     def import_folder_dict(*path) -> dict[str, pygame.Surface]:
-        print(FileUtility.absolutePath)
         frames: dict[str, pygame.Surface] = {}
         for folderPath, _, imageNames in os.walk(os.path.join(FileUtility.absolutePath, *path)):
             imageNames = [name for name in imageNames if name.endswith( ".png")]

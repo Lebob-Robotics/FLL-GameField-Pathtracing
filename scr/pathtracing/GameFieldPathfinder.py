@@ -22,4 +22,6 @@ class GameFieldPathfinder(PathFinder):
 if __name__ == "__main__":
     pygame.init()
     pathfinder = GameFieldPathfinder("unearthed")
-    pathfinder.run()
+    while True:
+        pathfinder.step()
+        pygame.display.update()

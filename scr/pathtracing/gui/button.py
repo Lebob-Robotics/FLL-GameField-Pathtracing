@@ -1,22 +1,19 @@
 import pygame
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self, size: tuple[int, int], colour: str | tuple[int, int, int], text: str = '', icon: pygame.Surface | None = None, groups: list[pygame.sprite.Group] = []):
+    def __init__(self, size: tuple[int, int], position: tuple[int, int], colour: str | tuple[int, int, int], text: str = '', icon: pygame.Surface | None = None, groups: list[pygame.sprite.Group] = []):
         super().__init__(*groups)
         self.image: pygame.Surface = pygame.Surface(size, pygame.SRCALPHA)
+        pygame.draw.rect(self.image, colour, (0, 0, *size), border_radius = 5)
         if icon:
-            self.image.blit(pygame.transform.scale(icon, size))
-        else:
-            self.image.fill(colour)
+            imageBuffer = size[0] // 10
+            self.image.blit(pygame.transform.scale(icon, [dimension - imageBuffer * 2 for dimension in size]), (imageBuffer, imageBuffer))
         
         self.font = pygame.font.SysFont('arial', 20)
         self.image.blit(self.font.render(text, False, 'black'))
             
         self.rect: pygame.Rect = self.image.get_rect()
-        
-        self.originalImage: pygame.Surface = self.image
-        self.darkeningSurface: pygame.Surface = pygame.Surface(size, pygame.SRCALPHA)
-        self.darkeningSurface.fill((0, 0, 0, 120))
+        self.rect.center = position
         
         self.active: bool = True
         self.pressed: bool = False
@@ -30,10 +27,7 @@ class Button(pygame.sprite.Sprite):
         self.pressed = False
         if self.rect.collidepoint(mousePos) and mouseStates[0]:
             self.pressed = True
-            
-        self.image.blit(self.originalImage)
-        if self.pressed:
-            self.image.blit(self.darkeningSurface)
+
             
     def isPressed(self):
         return self.pressed
