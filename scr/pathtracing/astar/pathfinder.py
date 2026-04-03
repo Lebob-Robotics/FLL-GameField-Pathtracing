@@ -23,38 +23,38 @@ class PathFinder:
         if self.algorithm.started:
             self.algorithm.step()
         else:
-            self.editGrid()
+            self.edit_grid()
         
         self.window.fill('white')
         self.grid.draw(self.window)
             
-    def editGrid(self):
+    def edit_grid(self):
         if any(pygame.mouse.get_pressed()):
-            mousePos = pygame.mouse.get_pos()
-            node: Node = self.grid.getMouseNode(mousePos)
+            mouse_pos = pygame.mouse.get_pos()
+            node: Node = self.grid.getMouseNode(mouse_pos)
             if pygame.mouse.get_pressed()[0]:  # left click
-                modKeys = pygame.key.get_mods()
-                if modKeys == pygame.KMOD_NONE:
-                    node.setFlag(Node.Flags.BARRIER)
-                elif modKeys == pygame.KMOD_LSHIFT:
-                    self.grid.startNode.setFlag(Node.Flags.UNCHECKED)
-                    self.grid.startNode = node
-                elif modKeys == pygame.KMOD_RSHIFT:
-                    self.grid.endNode.setFlag(Node.Flags.UNCHECKED)
+                mod_keys = pygame.key.get_mods()
+                if mod_keys == pygame.KMOD_NONE:
+                    node.set_flag(Node.Flags.BARRIER)
+                elif mod_keys == pygame.KMOD_LSHIFT:
+                    self.grid.start_node.set_flag(Node.Flags.UNCHECKED)
+                    self.grid.start_node = node
+                elif mod_keys == pygame.KMOD_RSHIFT:
+                    self.grid.endNode.set_flag(Node.Flags.UNCHECKED)
                     self.grid.endNode = node
             
             elif pygame.mouse.get_pressed()[2]:  # right click
-                node.setFlag(Node.Flags.UNCHECKED)
+                node.set_flag(Node.Flags.UNCHECKED)
                 
-    def debug(self, line: int, heading: str, *args, xPos: int = 10, lineHeight: int = 20):
-        self.window.blit(self.debugFont.render(f"{heading}: {', '.join(map(str,args))}", True, 'red'), (xPos, line * lineHeight))
+    def debug(self, line: int, heading: str, *args, x_pos: int = 10, line_height: int = 20):
+        self.window.blit(self.debugFont.render(f"{heading}: {', '.join(map(str,args))}", True, 'red'), (x_pos, line * line_height))
         
 if __name__ == "__main__":
     pygame.init()
     window = pygame.display.set_mode((1000, 800))
     pygame.display.set_caption("Pathfinder")
     
-    pathFinder = PathFinder(Grid(50, 40, window.size, backgroundColour= 'white'), window)
+    pathFinder = PathFinder(Grid(50, 40, window.size, background_colour= 'white'), window)
     while True:
         pathFinder.step()
         pygame.display.update()

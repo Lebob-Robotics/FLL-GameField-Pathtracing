@@ -6,8 +6,8 @@ class Button(pygame.sprite.Sprite):
         self.image: pygame.Surface = pygame.Surface(size, pygame.SRCALPHA)
         pygame.draw.rect(self.image, colour, (0, 0, *size), border_radius = 5)
         if icon:
-            imageBuffer = size[0] // 10
-            self.image.blit(pygame.transform.scale(icon, [dimension - imageBuffer * 2 for dimension in size]), (imageBuffer, imageBuffer))
+            image_buffer = size[0] // 10
+            self.image.blit(pygame.transform.scale(icon, [dimension - image_buffer * 2 for dimension in size]), (image_buffer, image_buffer))
         
         self.font = pygame.font.SysFont('arial', 20)
         self.image.blit(self.font.render(text, False, 'black'))
@@ -29,7 +29,7 @@ class Button(pygame.sprite.Sprite):
             self.pressed = True
 
             
-    def isPressed(self):
+    def is_pressed(self):
         return self.pressed
             
     def activate(self):

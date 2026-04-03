@@ -3,7 +3,7 @@ import pygame
 from pathtracing.astar.node import Node
 
 class Grid(pygame.sprite.Group):
-    def __init__(self, length: int, height: int, windowSize: tuple[int, int], screenBuffer: int = 20, background: pygame.surface.Surface | None = None, backgroundColour: str = "white", nodeAlpha: int = 255):
+    def __init__(self, length: int, height: int, windowSize: tuple[int, int], screenBuffer: int = 20, background: pygame.surface.Surface | None = None, background_colour: str = "white", nodeAlpha: int = 255):
         self.height: int = height
         self.length: int = length
             
@@ -14,7 +14,7 @@ class Grid(pygame.sprite.Group):
         
         self.nodeAlpha: int = nodeAlpha
         self.background: pygame.Surface = pygame.Surface(self.gridSurface.size)
-        self.backgroundColour = backgroundColour
+        self.backgroundColour = background_colour
         self.background.fill(self.backgroundColour)
         if background:
             self.background = pygame.transform.scale(background, self.background.size)
@@ -22,12 +22,12 @@ class Grid(pygame.sprite.Group):
         self.nodes = [[Node(x, y, self.nodeSize[0], self.nodeSize[1], flag = Node.Flags.UNCHECKED) 
                        for y in range(height)] for x in range(length)]
         
-        self.startNode: Node = self[0][0]
+        self.start_node: Node = self[0][0]
         self.endNode: Node = self[length - 1][height - 1]
         
     def draw(self, surface: pygame.Surface):
-        self.startNode.setFlag(Node.Flags.ORIGIN)
-        self.endNode.setFlag(Node.Flags.DESTINATION)
+        self.start_node.set_flag(Node.Flags.ORIGIN)
+        self.endNode.set_flag(Node.Flags.DESTINATION)
     
         self.gridSurface.blit(self.background)
         for row in self.nodes:
@@ -63,7 +63,7 @@ class Grid(pygame.sprite.Group):
         y = int((position[1] - self.screenBuffer // 2) // self.nodeSize[1])
         return self[x][y]
     
-    def updateNodes(self):
+    def update_nodes(self):
         for row in self.nodes:
             for node in row:
                 node.findNeighbours((self.length, self.height))
@@ -72,5 +72,5 @@ class Grid(pygame.sprite.Group):
     def __getitem__(self, key):
         return self.nodes[key]
     
-    def getItemByArray(self, key: tuple[int, int]):
+    def get_item_by_array(self, key: tuple[int, int]):
         return self[int(key[0])][int(key[1])]

@@ -7,42 +7,42 @@ class Algorithm:
     def __init__(self, grid: Grid, started: bool = False):
         self.grid: Grid = grid
         self.started: bool = started
-        self.foundPath: bool = False
+        self.found_path: bool = False
         
-        self.grid.updateNodes()
-        self.grid.startNode.g = 0
-        self.grid.startNode.updateFScore()
+        self.grid.update_nodes()
+        self.grid.start_node.g = 0
+        self.grid.start_node.update_fscore()
 
-        self.searchIndex = 0
-        self.openSet: PriorityQueue[tuple[float, int, Node]] = PriorityQueue()
-        self.openSet.put((0, self.searchIndex, self.grid.startNode))
-        self.closedSet = set([self.grid.startNode])
+        self.search_index = 0
+        self.open_set: PriorityQueue[tuple[float, int, Node]] = PriorityQueue()
+        self.open_set.put((0, self.search_index, self.grid.start_node))
+        self.closed_set = set([self.grid.start_node])
         
     def step(self):
-        f_score, index, node = self.openSet.get()
-        if node != self.grid.startNode and node != self.grid.endNode:
-            node.setFlag(Node.Flags.CLOSED)
+        f_score, index, node = self.open_set.get()
+        if node != self.grid.start_node and node != self.grid.endNode:
+            node.set_flag(Node.Flags.CLOSED)
 
         if node == self.grid.endNode:
             self.started = False
-            self.foundPath = True
+            self.found_path = True
 
         for pos, weight in node.neighbours:
-            neighbour: Node = self.grid.getItemByArray(pos)
+            neighbour: Node = self.grid.get_item_by_array(pos)
             if neighbour.isFlag(Node.Flags.BARRIER):
                 continue
             
             gScore = node.g + weight
             if gScore < neighbour.g:
                 neighbour.g = node.g + weight
-                neighbour.updateFScore()
+                neighbour.update_fscore()
 
-                if neighbour not in self.closedSet:
-                    self.searchIndex += 1
-                    self.openSet.put((neighbour.f, self.searchIndex, neighbour))
-                    self.closedSet.add(neighbour)
-                    neighbour.setFlag(Node.Flags.OPEN) if neighbour != self.grid.endNode else neighbour.setFlag(Node.Flags.DESTINATION)
+                if neighbour not in self.closed_set:
+                    self.search_index += 1
+                    self.open_set.put((neighbour.f, self.search_index, neighbour))
+                    self.closed_set.add(neighbour)
+                    neighbour.set_flag(Node.Flags.OPEN) if neighbour != self.grid.endNode else neighbour.set_flag(Node.Flags.DESTINATION)
                     
-        if self.openSet.qsize() == 0:
+        if self.open_set.qsize() == 0:
             self.started = False
-            self.foundPath = False
+            self.found_path = False
