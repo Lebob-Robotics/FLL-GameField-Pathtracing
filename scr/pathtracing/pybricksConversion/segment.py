@@ -1,5 +1,5 @@
 import math
-from pathtracing.astar.line import Line
+from pathtracing.pybricksConversion.line import Line
 
 class Arc:
     def __init__(self, p1: tuple[int, int], p2: tuple[int, int], p3: tuple[int, int]):
