@@ -24,7 +24,7 @@ class Line:
         a1, b1, c1 = l1.gradient, -1, l1.y_intercept
         a2, b2, c2 = l2.gradient, -1, l2.y_intercept
         
-        x: float = (b1*c2 - b2*c1) / (a1*b2 - a2*b1)
-        y: float = (c1*a2 - c2*a1) / (a1*b2 - a2*b1)
+        x = (b1*c2 - b2*c1) / (a1*b2 - a2*b1)
+        y = (c1*a2 - c2*a1) / (a1*b2 - a2*b1)
         return (x, y)
         

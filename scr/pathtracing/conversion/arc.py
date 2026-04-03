@@ -1,11 +1,11 @@
 import math
-from pathtracing.pybricksConversion.line import Line
+from pathtracing.conversion.line import Line
 
 class Arc:
-    def __init__(self, p1: tuple[int, int], p2: tuple[int, int], p3: tuple[int, int]):
-        self.start = p1
-        self.midpoint = p2
-        self.end = p3
+    def __init__(self, p1, p2, p3):
+        self.start: tuple[float, float] = p1
+        self.midpoint: tuple[float, float] = p2
+        self.end: tuple[float, float] = p3
         
         self.radius: float = self.calculate_radius()
         self.angle: float = self.calculate_angle()
