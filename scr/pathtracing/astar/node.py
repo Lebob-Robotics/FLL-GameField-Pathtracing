@@ -24,7 +24,7 @@ class Node(sprite.Sprite):
         self.width: float = width if width else length
         self.flag = flag
         
-        self.successor: None | Node = None
+        self.predeccessor: None | Node = None
         self.neighbours: list[tuple[tuple[int, int], float]] = [((0, 0), 0)]
         self.f: float = inf
         self.g: float = inf
@@ -54,3 +54,6 @@ class Node(sprite.Sprite):
     
     def update_fscore(self):
         self.f = self.g + self.h
+        
+    def get_pos(self):
+        return self.x, self.y

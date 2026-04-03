@@ -27,6 +27,7 @@ class PathFinder:
         
         self.window.fill('white')
         self.grid.draw(self.window)
+        self.draw_path()
             
     def edit_grid(self):
         if any(pygame.mouse.get_pressed()):
@@ -40,11 +41,20 @@ class PathFinder:
                     self.grid.start_node.set_flag(Node.Flags.UNCHECKED)
                     self.grid.start_node = node
                 elif mod_keys == pygame.KMOD_RSHIFT:
-                    self.grid.endNode.set_flag(Node.Flags.UNCHECKED)
-                    self.grid.endNode = node
+                    self.grid.end_node.set_flag(Node.Flags.UNCHECKED)
+                    self.grid.end_node = node
             
             elif pygame.mouse.get_pressed()[2]:  # right click
                 node.set_flag(Node.Flags.UNCHECKED)
+                
+    def draw_path(self):
+        for i in range(len(self.algorithm.path) - 1):
+            pygame.draw.line(self.window, "purple", 
+                             [self.algorithm.path[i][0] * self.grid.node_size[0] + self.grid.screenBuffer // 2 + self.grid.node_size[0] // 2, 
+                              self.algorithm.path[i][1] * self.grid.node_size[1] + self.grid.screenBuffer // 2 + self.grid.node_size[1] // 2], 
+                             [self.algorithm.path[i + 1][0] * self.grid.node_size[0] + self.grid.screenBuffer // 2 + self.grid.node_size[0] // 2, 
+                              self.algorithm.path[i + 1][1] * self.grid.node_size[1] + self.grid.screenBuffer // 2 + self.grid.node_size[1] // 2],
+                             width = 3)
                 
     def debug(self, line: int, heading: str, *args, x_pos: int = 10, line_height: int = 20):
         self.window.blit(self.debugFont.render(f"{heading}: {', '.join(map(str,args))}", True, 'red'), (x_pos, line * line_height))

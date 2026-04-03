@@ -9,7 +9,7 @@ class Grid(pygame.sprite.Group):
             
         self.screenBuffer: int = screenBuffer
         self.gridSurface: pygame.Surface = pygame.Surface([point - self.screenBuffer for point in windowSize], pygame.SRCALPHA)
-        self.nodeSize: tuple[float, float] = ((self.gridSurface.get_width()) / length, 
+        self.node_size: tuple[float, float] = ((self.gridSurface.get_width()) / length, 
                                               (self.gridSurface.get_height()) / height)
         
         self.nodeAlpha: int = nodeAlpha
@@ -19,25 +19,25 @@ class Grid(pygame.sprite.Group):
         if background:
             self.background = pygame.transform.scale(background, self.background.size)
         
-        self.nodes = [[Node(x, y, self.nodeSize[0], self.nodeSize[1], flag = Node.Flags.UNCHECKED) 
+        self.nodes = [[Node(x, y, self.node_size[0], self.node_size[1], flag = Node.Flags.UNCHECKED) 
                        for y in range(height)] for x in range(length)]
         
         self.start_node: Node = self[0][0]
-        self.endNode: Node = self[length - 1][height - 1]
+        self.end_node: Node = self[length - 1][height - 1]
         
     def draw(self, surface: pygame.Surface):
         self.start_node.set_flag(Node.Flags.ORIGIN)
-        self.endNode.set_flag(Node.Flags.DESTINATION)
+        self.end_node.set_flag(Node.Flags.DESTINATION)
     
         self.gridSurface.blit(self.background)
         for row in self.nodes:
             for node in row:
                 rect = pygame.rect.Rect(
-                    node.x * self.nodeSize[0], 
-                    node.y * self.nodeSize[1],
-                    self.nodeSize[0], self.nodeSize[1])
+                    node.x * self.node_size[0], 
+                    node.y * self.node_size[1],
+                    self.node_size[0], self.node_size[1])
                 colour = pygame.Color(node.getFlag().value)
-                node = pygame.Surface(self.nodeSize, pygame.SRCALPHA)
+                node = pygame.Surface(self.node_size, pygame.SRCALPHA)
                 node.fill(colour)
                 node.set_alpha(self.nodeAlpha)
                 self.gridSurface.blit(node, rect)
@@ -45,29 +45,29 @@ class Grid(pygame.sprite.Group):
         for row in range(len(self.nodes)):
             for column in range(row):
                 pygame.draw.line(self.gridSurface, "grey", 
-                                 (row * self.nodeSize[0], 0), 
-                                 (row * self.nodeSize[0], 
-                                  self.height * self.nodeSize[1]))
+                                 (row * self.node_size[0], 0), 
+                                 (row * self.node_size[0], 
+                                  self.height * self.node_size[1]))
                 
         for column in range(len(self.nodes[0])):
             for row in range(column):
                 pygame.draw.line(self.gridSurface, "grey", 
-                                 (0, column * self.nodeSize[1]), 
-                                 (self.length * self.nodeSize[0], 
-                                  column * self.nodeSize[1]))
+                                 (0, column * self.node_size[1]), 
+                                 (self.length * self.node_size[0], 
+                                  column * self.node_size[1]))
                 
         surface.blit(self.gridSurface, (self.screenBuffer // 2, self.screenBuffer // 2))
                 
     def getMouseNode(self, position: tuple[int, int]):
-        x = int((position[0] - self.screenBuffer // 2) // self.nodeSize[0])
-        y = int((position[1] - self.screenBuffer // 2) // self.nodeSize[1])
+        x = int((position[0] - self.screenBuffer // 2) // self.node_size[0])
+        y = int((position[1] - self.screenBuffer // 2) // self.node_size[1])
         return self[x][y]
     
     def update_nodes(self):
         for row in self.nodes:
             for node in row:
                 node.findNeighbours((self.length, self.height))
-                node.setHeuristic(self.endNode)
+                node.setHeuristic(self.end_node)
     
     def __getitem__(self, key):
         return self.nodes[key]
