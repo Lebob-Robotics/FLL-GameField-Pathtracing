@@ -27,7 +27,7 @@ class PathFinder:
         
         self.window.fill('white')
         self.grid.draw(self.window)
-        self.draw_path()
+        self.draw_output()
         
         self.debug(1, self.grid.getMouseNode(pygame.mouse.get_pos()).get_pos())
             
@@ -49,7 +49,7 @@ class PathFinder:
             elif pygame.mouse.get_pressed()[2]:  # right click
                 node.set_flag(Node.Flags.UNCHECKED)
                 
-    def draw_path(self):
+    def draw_output(self):
         for i in range(len(self.algorithm.path) - 1):
             pygame.draw.line(self.window, "purple", 
                              self.grid.convert_coords(self.algorithm.path[i]), 

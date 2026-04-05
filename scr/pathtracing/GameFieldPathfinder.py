@@ -18,20 +18,25 @@ class GameFieldPathfinder(PathFinder):
                     background = gameMap, 
                     node_transparency = 100)
         super().__init__(grid, window)
-        self.path_curve = None
+        self.path_curve: PathCurve = PathCurve(end_pos= self.grid.end_node.get_pos())
+        self.path_calculated: bool = False
         
     def step(self):
         super().step()
-        if self.algorithm.found_path:
-            self.convert_arcs()
         
-    def convert_arcs(self):
-        self.path_curve = PathCurve(*self.algorithm.path, 
-                                    end_pos= self.grid.end_node.get_pos(), 
-                                    jaggedness= 3, 
-                                    max_length= 5)
+        if self.algorithm.found_path and not self.path_calculated:
+            self.path_calculated = True
+            self.convert_path()
+        self.draw_path()
+        
+    def convert_path(self):
+        self.path_curve = PathCurve(*self.algorithm.path, end_pos= self.grid.end_node.get_pos(), 
+                                    jaggedness= 3, max_length= 5)
+        
+    def draw_path(self):
         for section in self.path_curve.path:
             section.draw(self.window, self.grid)
+            
         
 if __name__ == "__main__":
     pygame.init()

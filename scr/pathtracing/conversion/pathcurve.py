@@ -11,7 +11,8 @@ class PathCurve:
         self.end_pos = end_pos
         
         self.path: list[Line | Arc] = []
-        self.path = self.find_arcs()
+        if points:
+            self.path = self.find_arcs()
 
     def find_arcs(self):
         path: list[Line | Arc] = []
