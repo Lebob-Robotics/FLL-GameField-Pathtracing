@@ -13,7 +13,7 @@ class Node(sprite.Sprite):
         DESTINATION = 'turquoise3'
         PATH = 'purple'
         
-    neighbourNodes: tuple = ((-1.0, -1.0, 2.0), (-1.0, 0.0, 1.0), (-1.0, 1.0, 2.0),
+    neighhour_nodes: tuple = ((-1.0, -1.0, 2.0), (-1.0, 0.0, 1.0), (-1.0, 1.0, 2.0),
                              (0.0, -1.0, 1.0)                   , (0.0, 1.0, 1.0),
                              (1.0, -1.0, 2.0),  (1.0, 0.0, 1.0) , (1.0, 1.0, 2.0))
     
@@ -24,13 +24,13 @@ class Node(sprite.Sprite):
         self.width: float = width if width else length
         self.flag = flag
         
-        self.successor: None | Node = None
+        self.predeccessor: None | Node = None
         self.neighbours: list[tuple[tuple[int, int], float]] = [((0, 0), 0)]
         self.f: float = inf
         self.g: float = inf
         self.h: float = inf
     
-    def setFlag(self, flag: Flags):
+    def set_flag(self, flag: Flags):
         self.flag = flag
         
     def getFlag(self):
@@ -44,7 +44,7 @@ class Node(sprite.Sprite):
         
     def findNeighbours(self, gridSize: tuple[int, int]):
         self.neighbours = []
-        for x, y, weight in Node.neighbourNodes:
+        for x, y, weight in Node.neighhour_nodes:
             if not (self.x + x >= 0 and self.x + x < gridSize[0]):
                 continue
             if not (self.y + y >= 0 and self.y + y < gridSize[1]):
@@ -52,5 +52,8 @@ class Node(sprite.Sprite):
             
             self.neighbours.append(((self.x + x, self.y + y), weight))
     
-    def updateFScore(self):
+    def update_fscore(self):
         self.f = self.g + self.h
+        
+    def get_pos(self):
+        return self.x, self.y
