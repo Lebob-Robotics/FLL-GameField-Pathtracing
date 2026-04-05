@@ -28,6 +28,8 @@ class PathFinder:
         self.window.fill('white')
         self.grid.draw(self.window)
         self.draw_path()
+        
+        self.debug(1, self.grid.getMouseNode(pygame.mouse.get_pos()).get_pos())
             
     def edit_grid(self):
         if any(pygame.mouse.get_pressed()):
@@ -50,10 +52,8 @@ class PathFinder:
     def draw_path(self):
         for i in range(len(self.algorithm.path) - 1):
             pygame.draw.line(self.window, "purple", 
-                             [self.algorithm.path[i][0] * self.grid.node_size[0] + self.grid.screenBuffer // 2 + self.grid.node_size[0] // 2, 
-                              self.algorithm.path[i][1] * self.grid.node_size[1] + self.grid.screenBuffer // 2 + self.grid.node_size[1] // 2], 
-                             [self.algorithm.path[i + 1][0] * self.grid.node_size[0] + self.grid.screenBuffer // 2 + self.grid.node_size[0] // 2, 
-                              self.algorithm.path[i + 1][1] * self.grid.node_size[1] + self.grid.screenBuffer // 2 + self.grid.node_size[1] // 2],
+                             self.grid.convert_coords(self.algorithm.path[i]), 
+                             self.grid.convert_coords(self.algorithm.path[i + 1]),
                              width = 3)
                 
     def debug(self, line: int, heading: str, *args, x_pos: int = 10, line_height: int = 20):

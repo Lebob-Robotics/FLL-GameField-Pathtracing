@@ -3,7 +3,7 @@ import pygame
 from pathtracing.astar.node import Node
 
 class Grid(pygame.sprite.Group):
-    def __init__(self, length: int, height: int, windowSize: tuple[int, int], screenBuffer: int = 20, background: pygame.surface.Surface | None = None, background_colour: str = "white", nodeAlpha: int = 255):
+    def __init__(self, length: int, height: int, windowSize: tuple[int, int], screenBuffer: int = 20, background: pygame.surface.Surface | None = None, background_colour: str = "white", node_transparency: int = 255):
         self.height: int = height
         self.length: int = length
             
@@ -12,7 +12,7 @@ class Grid(pygame.sprite.Group):
         self.node_size: tuple[float, float] = ((self.gridSurface.get_width()) / length, 
                                               (self.gridSurface.get_height()) / height)
         
-        self.nodeAlpha: int = nodeAlpha
+        self.nodeAlpha: int = node_transparency
         self.background: pygame.Surface = pygame.Surface(self.gridSurface.size)
         self.backgroundColour = background_colour
         self.background.fill(self.backgroundColour)
@@ -57,6 +57,12 @@ class Grid(pygame.sprite.Group):
                                   column * self.node_size[1]))
                 
         surface.blit(self.gridSurface, (self.screenBuffer // 2, self.screenBuffer // 2))
+        
+    def convert_coords(self, coords: tuple[float, float]):
+        return [coords[point] * self.node_size[point] + 
+                self.screenBuffer // 2 + 
+                self.node_size[point] // 2 
+                for point in range(len(coords))]
                 
     def getMouseNode(self, position: tuple[int, int]):
         x = int((position[0] - self.screenBuffer // 2) // self.node_size[0])

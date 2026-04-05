@@ -2,27 +2,30 @@ import math
 
 from pathtracing.conversion.arc import Arc
 
-class Path:
-    def __init__(self, *points: tuple[int, int]):
-        self.points = points
-        self.arcs = self.find_segments()
+class PathCurve:
+    def __init__(self, *points: tuple[float, float]):
+        self.points = tuple(reversed(points))
+        self.arcs = self.find_arcs()
         
     def get_arc(self, id: int):
         return self.arcs[id]
     
-    def find_segments(self):
-        arcs: list[list[tuple[float, float]]] = []
-        index, arc_index, last_direction = 0, 0, 0
-        while index <= len(self.points):
+    def find_arcs(self):
+        arcs: list[list[tuple[float, float]]] = [[]]
+        last_direction = 999
+        
+        for index in range(len(self.points) - 1):
             point = self.points[index]
             next = self.points[index + 1]
-            if Path.has_changed_direction(last_direction, point, next):
-                last_direction = Path.direction(point, next)
-                arcs[arc_index].append(point)
+            if PathCurve.has_changed_direction(last_direction, point, next):
+                last_direction = PathCurve.direction(point, next)
+                arcs[-1].append(point) 
                 
-            if len(arcs[arc_index]) == 3:
-                arc_index += 1
-            index += 1
+            if len(arcs[-1]) == 3:
+                arcs.append([])
+                
+        arcs.pop()
+        print([Arc(*arc) for arc in arcs])
         return [Arc(*arc) for arc in arcs]
     
     @staticmethod
@@ -31,6 +34,6 @@ class Path:
     
     @staticmethod
     def has_changed_direction(last_dir: float, p1: tuple[float, float], p2: tuple[float, float]):
-        if Path.direction(p1, p2) != last_dir:
+        if PathCurve.direction(p1, p2) != last_dir:
             return True
         return False
