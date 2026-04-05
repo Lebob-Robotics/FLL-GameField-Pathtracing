@@ -1,5 +1,7 @@
 import pygame
 
+from pathtracing.astar.grid import Grid
+
 class Line:
     VERTICAL_GRADIENT = 999999
     
@@ -20,7 +22,6 @@ class Line:
         
     def get_perpendicular_bisector(self):
         midpoint = ((self.p2[0] + self.p1[0]) / 2), ((self.p2[1] + self.p1[1]) / 2)
-        print(midpoint)
         gradient = 1 / self.m if self.m != 0 else self.VERTICAL_GRADIENT
         return Line(midpoint, (midpoint[0] + 1, midpoint[1] + gradient))
     
@@ -32,4 +33,7 @@ class Line:
         x = (y1*c2 - y2*c1) / (x1*y2 - x2*y1)
         y = (c1*x2 - c2*x1) / (x1*y2 - x2*y1)
         return (x, -y)
+    
+    def draw(self, surface, grid: Grid):
+        pygame.draw.line(surface, "blue", grid.convert_coords(self.p1), grid.convert_coords(self.p2), 5)
         

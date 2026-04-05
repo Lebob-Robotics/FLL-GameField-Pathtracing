@@ -26,10 +26,12 @@ class GameFieldPathfinder(PathFinder):
             self.convert_arcs()
         
     def convert_arcs(self):
-        self.path_curve = PathCurve(*self.algorithm.path)
-        for arc in self.path_curve.arcs:
-            print(arc.centre, arc.radius)
-            pygame.draw.circle(self.window, "blue", self.grid.convert_coords(arc.centre), arc.radius * self.grid.node_size[0], 3)
+        self.path_curve = PathCurve(*self.algorithm.path, 
+                                    end_pos= self.grid.end_node.get_pos(), 
+                                    jaggedness= 3, 
+                                    max_length= 5)
+        for section in self.path_curve.path:
+            section.draw(self.window, self.grid)
         
 if __name__ == "__main__":
     pygame.init()

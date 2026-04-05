@@ -1,4 +1,7 @@
+import pygame
 import math
+
+from pathtracing.astar.grid import Grid
 from pathtracing.conversion.line import Line
 
 class Arc:
@@ -8,12 +11,8 @@ class Arc:
         self.end: tuple[float, float] = p3
         self.centre: tuple[float, float] = (0, 0)
         
-        print(p1, p2, p3)
-        
         self.radius: float = self.calculate_radius()
         self.angle: float = self.calculate_angle()
-        
-        print(self.centre, self.radius)
         
     def calculate_radius(self):
         l1 = Line(self.start, self.midpoint).get_perpendicular_bisector()
@@ -23,5 +22,8 @@ class Arc:
 
     def calculate_angle(self):
         return math.acos((2 * self.radius**2 - math.dist(self.start, self.end)**2) / (4 * self.radius**2))
+    
+    def draw(self, surface, grid: Grid):
+        pygame.draw.circle(surface, "blue", grid.convert_coords(self.centre), self.radius * grid.node_size[0], 5)
     
     
