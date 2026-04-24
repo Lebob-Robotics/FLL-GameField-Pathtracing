@@ -25,7 +25,8 @@ class Node(sprite.Sprite):
         self.flag = flag
         
         self.predeccessor: None | Node = None
-        self.neighbours: list[tuple[tuple[int, int], float]] = [((0, 0), 0)]
+        self.neighbours: list[tuple[Node, float]] = [(self, 0)]
+        self.weight: float = 0
         self.f: float = inf
         self.g: float = inf
         self.h: float = inf
@@ -33,24 +34,29 @@ class Node(sprite.Sprite):
     def set_flag(self, flag: Flags):
         self.flag = flag
         
-    def getFlag(self):
+    def get_flag(self):
         return self.flag
     
-    def isFlag(self, flag: Flags):
+    def is_flag(self, flag: Flags):
         return self.flag == flag
     
-    def setHeuristic(self, other):
-        self.h = abs(self.x - other.x) ** 2 + abs(self.y - other.y) ** 2
+    @staticmethod
+    def heuristic(this, other):
+        return abs(this.x - other.x) ** 2 + abs(this.y - other.y) ** 2
+    
+    def set_heuristic(self, other):
+        self.h = Node.heuristic(self, other)
         
-    def findNeighbours(self, gridSize: tuple[int, int]):
+    def find_neighbours(self, grid):
         self.neighbours = []
         for x, y, weight in Node.neighhour_nodes:
-            if not (self.x + x >= 0 and self.x + x < gridSize[0]):
+            if not (self.x + x >= 0 and self.x + x < grid.length):
                 continue
-            if not (self.y + y >= 0 and self.y + y < gridSize[1]):
+            if not (self.y + y >= 0 and self.y + y < grid.height):
                 continue
             
-            self.neighbours.append(((self.x + x, self.y + y), weight))
+            neighbour = grid.get_item_by_array((self.x + x, self.y + y))
+            self.neighbours.append((neighbour, weight + neighbour.weight))
     
     def update_fscore(self):
         self.f = self.g + self.h

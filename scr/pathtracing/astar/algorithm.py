@@ -30,9 +30,8 @@ class Algorithm:
             self.found_path = True
             self.retrace()
 
-        for pos, weight in node.neighbours:
-            neighbour: Node = self.grid.get_item_by_array(pos)
-            if neighbour.isFlag(Node.Flags.BARRIER):
+        for neighbour, weight in node.neighbours:
+            if neighbour.is_flag(Node.Flags.BARRIER):
                 continue
             
             gScore = node.g + weight
