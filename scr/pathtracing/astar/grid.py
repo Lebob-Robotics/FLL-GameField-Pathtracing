@@ -2,8 +2,18 @@ import pygame
 
 from pathtracing.astar.node import Node
 
+class CellWeightEmanation:
+    def __init__(self, emanation_range: float, impact_method):
+        self.emanation_range = emanation_range
+        self.impact_method = impact_method
+        
+    def weight_range(self, distance):
+        return self.impact_method(distance)
+
 class Grid(pygame.sprite.Group):
-    def __init__(self, length: int, height: int, windowSize: tuple[int, int], screenBuffer: int = 20, background: pygame.surface.Surface | None = None, background_colour: str = "white", node_transparency: int = 255):
+    def __init__(self, length: int, height: int, windowSize: tuple[int, int], barrier_emanation: CellWeightEmanation, screenBuffer: int = 20, 
+                 background: pygame.surface.Surface | None = None, background_colour: str = "white", node_transparency: int = 255,
+                 ):
         self.height: int = height
         self.length: int = length
             
@@ -28,7 +38,7 @@ class Grid(pygame.sprite.Group):
         
         self.start_node: Node = self[0][0]
         self.end_node: Node = self[length - 1][height - 1]
-        self.affected_distance: float = 10.0
+        self.barrier_emanation = barrier_emanation
         
     def draw(self, surface: pygame.Surface):
         self.start_node.set_flag(Node.Flags.ORIGIN)
@@ -80,9 +90,9 @@ class Grid(pygame.sprite.Group):
         
         for node in self.raw_nodes:
             distance = Node.heuristic(barrier, node)
-            if distance >= self.affected_distance or distance == 0:
+            if distance >= self.barrier_emanation.emanation_range or distance == 0:
                 continue
-            node.weight += (self.affected_distance / distance) * 10
+            node.weight += self.barrier_emanation.weight_range(distance)
     
     def update_nodes(self):
         for node in self.raw_nodes:
