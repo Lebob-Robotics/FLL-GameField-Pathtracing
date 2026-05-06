@@ -11,8 +11,10 @@ class PathCurve:
         self.end_pos = end_pos
         
         self.path: list[Line | Arc] = []
-        if points:
+        if len(points) >= 2:
             self.path = self.find_arcs()
+        elif len(points) == 1:
+            self.path = [Line(points[0], end_pos)]
 
     def find_arcs(self):
         path: list[Line | Arc] = []
@@ -25,17 +27,20 @@ class PathCurve:
             point = self.points[index]
             next = self.points[index + 1]
             index += 1
-            
+
             if PathCurve.has_changed_direction(last_direction, point, next):
                 last_direction = PathCurve.direction(point, next)
                 arc_points.append(point)
-                
+
             jagged = False
             if len(arc_points) == 3:
-                jagged = abs(math.dist(arc_points[0], arc_points[1]) - 
+                jagged = abs(math.dist(arc_points[0], arc_points[1]) -
                              math.dist(arc_points[1], arc_points[2])) > self.jaggedness
-                
+
             if len(arc_points) <= 1:
+                if next == self.end_pos:
+                    arc_points.append(next)
+                    break
                 continue
             exceeds_length: bool = math.dist(arc_points[-1], arc_points[-2]) > self.max_length
                 

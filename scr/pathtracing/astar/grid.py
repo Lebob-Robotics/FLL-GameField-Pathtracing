@@ -74,6 +74,38 @@ class Grid(pygame.sprite.Group):
             for node in row:
                 node.findNeighbours((self.length, self.height))
                 node.setHeuristic(self.end_node)
+
+    def reset_pathfinding(self):
+        """Clear OPEN/CLOSED/PATH flags and reset f/g/h scores. Preserves BARRIER."""
+        from math import inf
+        for row in self.nodes:
+            for node in row:
+                if node.isFlag(Node.Flags.BARRIER):
+                    continue
+                node.set_flag(Node.Flags.UNCHECKED)
+                node.predeccessor = None
+                node.f = node.g = node.h = inf
+
+    def clear_barriers(self):
+        for row in self.nodes:
+            for node in row:
+                if node.isFlag(Node.Flags.BARRIER):
+                    node.set_flag(Node.Flags.UNCHECKED)
+
+    def add_barrier_disc(self, cx: int, cy: int, radius: int):
+        """Mark every node within `radius` cells of (cx, cy) as BARRIER."""
+        for x in range(max(0, cx - radius), min(self.length, cx + radius + 1)):
+            for y in range(max(0, cy - radius), min(self.height, cy + radius + 1)):
+                if (x - cx) ** 2 + (y - cy) ** 2 <= radius ** 2:
+                    self[x][y].set_flag(Node.Flags.BARRIER)
+
+    def set_start(self, x: int, y: int):
+        self.start_node.set_flag(Node.Flags.UNCHECKED)
+        self.start_node = self[x][y]
+
+    def set_end(self, x: int, y: int):
+        self.end_node.set_flag(Node.Flags.UNCHECKED)
+        self.end_node = self[x][y]
     
     def __getitem__(self, key):
         return self.nodes[key]

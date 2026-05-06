@@ -1,19 +1,25 @@
+from pathlib import Path
+
 import pygame
 
 import pathtracing.gui as gui
 from pathtracing.gamefieldpathfinder import GameFieldPathfinder
 
+SCR_DIR = Path(__file__).resolve().parent.parent
+
 class Main:
     def __init__(self):
         pygame.init()
         self.pathfinder: GameFieldPathfinder = GameFieldPathfinder("unearthed")
-        
-        self.guiIcons: dict[str, pygame.Surface] = gui.FileUtility.import_folder_dict("scr", "assets", "gui")
+
+        gui.FileUtility.absolute_path = str(SCR_DIR)
+        self.guiIcons: dict[str, pygame.Surface] = gui.FileUtility.import_folder_dict("assets", "gui")
         self.guiGroup: pygame.sprite.Group = pygame.sprite.Group()
-        
-        self.saveButton: gui.Button = gui.Button((60, 60), (100, 100), 'white', 
-                                                 icon = self.guiIcons["saveIcon"], 
-                                                 groups = [self.guiGroup])
+
+        if "saveIcon" in self.guiIcons:
+            self.saveButton: gui.Button = gui.Button((60, 60), (100, 100), 'white',
+                                                     icon=self.guiIcons["saveIcon"],
+                                                     groups=[self.guiGroup])
     
         self.window: pygame.Surface = pygame.display.get_surface() # type: ignore
     
