@@ -2,7 +2,7 @@ from pathlib import Path
 import pygame
 
 from pathtracing.astar.pathfinder import PathFinder
-from pathtracing.astar.grid import Grid
+from pathtracing.astar.grid import Grid, CellWeightEmanation
 from pathtracing.conversion.pathcurve import PathCurve
 
 class GameFieldPathfinder(PathFinder):
@@ -14,7 +14,10 @@ class GameFieldPathfinder(PathFinder):
         window = pygame.display.set_mode(pygame.transform.scale_by(gameMap, WINDOW_WIDTH / gameMap.width).size)
         pygame.display.set_caption(f"{mapName.capitalize()} Gamefield Pathfinding")
     
-        grid = Grid(GRID_SIZE, round((window.get_height() / window.get_width()) * GRID_SIZE), window.size, 
+        grid = Grid(length = GRID_SIZE, 
+                    height = round((window.get_height() / window.get_width()) * GRID_SIZE), 
+                    windowSize = window.size, 
+                    barrier_emanation = CellWeightEmanation(30, lambda x: -0.5 * x + 50),
                     background = gameMap, 
                     node_transparency = 100)
         super().__init__(grid, window)

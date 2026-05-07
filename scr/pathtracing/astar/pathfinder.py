@@ -1,6 +1,6 @@
 import pygame
 
-from pathtracing.astar.grid import Grid
+from pathtracing.astar.grid import Grid, CellWeightEmanation
 from pathtracing.astar.node import Node
 from pathtracing.astar.algorithm import Algorithm
 
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     window = pygame.display.set_mode((1000, 800))
     pygame.display.set_caption("Pathfinder")
     
-    pathFinder = PathFinder(Grid(50, 40, window.size, background_colour= 'white'), window)
+    pathFinder = PathFinder(Grid(50, 40, window.size, background_colour= 'white', barrier_emanation= CellWeightEmanation(0, lambda x: 0)), window)
     while True:
         pathFinder.step()
         pygame.display.update()
