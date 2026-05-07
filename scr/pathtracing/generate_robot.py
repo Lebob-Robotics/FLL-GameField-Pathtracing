@@ -32,16 +32,20 @@ from pathtracing.missions import (
     GRID_LENGTH,
     HOME_HEADING_DEG,
     HOME_POS,
+    MISSION_LANDMARK_RADIUS,
     MISSIONS_BY_FIELD,
+    ROBOT_RADIUS,
 )
 
-# Cells around each non-target mission to mark as obstacle. Cell ~ 33mm,
-# Lebob axle track 130mm so 3-cell radius (~100mm) gives clearance for the
-# drive base plus attachments.
-OBSTACLE_RADIUS = 3
+# Total inflation = robot half-width + landmark size. Keeps a 10x10 robot
+# clear of every other mission model. Adjust ROBOT_SIZE in missions.py to
+# scale this everywhere.
+OBSTACLE_RADIUS = ROBOT_RADIUS + MISSION_LANDMARK_RADIUS
 
-# Field-edge buffer so robot does not graze walls.
-EDGE_BUFFER = 1
+# Field-edge buffer so robot center cannot leave field. Capped at 1 below
+# robot radius to avoid walling off legitimate edge-adjacent missions; the
+# robot is allowed to touch the wall but not pass through it.
+EDGE_BUFFER = max(1, ROBOT_RADIUS - 4)
 
 
 def _build_grid(window_size):

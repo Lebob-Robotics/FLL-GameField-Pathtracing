@@ -6,12 +6,17 @@ from pathtracing.astar.grid import Grid
 from pathtracing.astar.node import Node
 from pathtracing.astar.pathfinder import PathFinder
 from pathtracing.conversion.pathcurve import PathCurve
-from pathtracing.missions import HOME_POS, MISSIONS_BY_FIELD
+from pathtracing.missions import (
+    HOME_POS,
+    MISSION_LANDMARK_RADIUS,
+    MISSIONS_BY_FIELD,
+    ROBOT_RADIUS,
+)
 
 
-# Cells around each non-target mission to mark as obstacle.
-OBSTACLE_RADIUS = 3
-EDGE_BUFFER = 1
+# Inflated obstacle radius matches generate_robot so GUI preview = robot code.
+OBSTACLE_RADIUS = ROBOT_RADIUS + MISSION_LANDMARK_RADIUS
+EDGE_BUFFER = max(1, ROBOT_RADIUS - 4)
 
 
 class GameFieldPathfinder(PathFinder):

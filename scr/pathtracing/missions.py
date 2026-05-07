@@ -32,6 +32,16 @@ FIELD_HEIGHT_MM = 1143
 CELL_X_MM = FIELD_WIDTH_MM / GRID_LENGTH
 CELL_Y_MM = FIELD_HEIGHT_MM / GRID_HEIGHT
 
+# Robot footprint as a square in grid cells. Change this single value to
+# match the actual robot. Pathfinding inflates obstacles by ROBOT_RADIUS so
+# the robot center never gets closer than its half-width to any landmark.
+ROBOT_SIZE = 10
+ROBOT_RADIUS = (ROBOT_SIZE + 1) // 2
+
+# Extra cells around each mission landmark (the model itself). Combined with
+# ROBOT_RADIUS this gives total Minkowski clearance when planning.
+MISSION_LANDMARK_RADIUS = 1
+
 # Bottom-right blue home base, just inside the arc. Robot faces north.
 # Grid cell mapping derived from official Map.pdf (10 cols x 6 rows,
 # columns A-J, rows 1-6 with row 6 = top, each cell 20 cm).
